@@ -63,6 +63,7 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
 export type RegisterRequest = {
   email: string;
   password: string;
+  userName: string;
 };
 
 export const register = async (data: RegisterRequest) => {
@@ -96,4 +97,13 @@ export const getMe = async () => {
 
 export const logout = async (): Promise<void> => {
   await nextServer.post("/auth/logout");
+};
+
+type UpdateUsername = {
+  username: string;
+};
+
+export const getMeUpdata = async (data: UpdateUsername) => {
+  const res = await nextServer.patch("/auth/users/me", data);
+  return res.data;
 };

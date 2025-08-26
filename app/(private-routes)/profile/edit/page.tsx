@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import css from './EditProfilePage.module.css'
 import { useRouter } from 'next/navigation';
-import { getMe } from '@/lib/api/clientApi';
+import { getMe, getMeUpdata } from '@/lib/api/clientApi';
 import Image from 'next/image';
 
 export default function EditProfilePage() {
@@ -19,7 +19,7 @@ export default function EditProfilePage() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        await getMe()
+        await getMeUpdata({username: username})
     }
 
     useEffect(() =>{
