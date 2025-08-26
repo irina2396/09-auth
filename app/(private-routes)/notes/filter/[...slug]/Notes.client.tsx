@@ -2,7 +2,7 @@
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import css from './NotesPage.module.css'
-import { fetchNotes, FetchNotesResponse } from '@/lib/api'
+import { fetchNotes, FetchNotesResponse } from '@/lib/api/clientApi'
 import { useState } from 'react'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import NoteList from '@/components/NoteList/NoteList'

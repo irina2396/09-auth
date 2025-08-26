@@ -1,4 +1,4 @@
-import { fetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/serverApi';
 import NotesClient from './Notes.client';
 import { Metadata } from 'next';
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
         title: tag ? `Notes ${tag} | NoteHub` : 'All Notes | Notehub',
         description: `${tag}`,
-        url: `https://08-zustand-omega-gold.vercel.app/notes/${tag ?? ""}`,
+        url: `https://09-auth-five-eta.vercel.app//notes/${tag ?? ""}`,
         images: [
             {
                 url: `https://ac.goit.global/fullstack/react/notehub-og-meta.jpg`,
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function NotesPage({params}: Props) {
   const { slug } = await params;
   const tag = slug?.[0] || null;
-  const res = await fetchNotes({ page: 1, perPage: 12, ...(tag && tag !== 'All' ? {tag} : {}) });
+  const res = await fetchNotes("", 1, tag && tag !== 'All' ? tag : undefined);
 
   return (
     <NotesClient initialNotes={res} initialTag={ tag} />
