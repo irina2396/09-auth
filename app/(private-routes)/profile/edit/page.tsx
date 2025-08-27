@@ -4,31 +4,36 @@ import css from './EditProfilePage.module.css'
 import { useRouter } from 'next/navigation';
 import { getMe, getMeUpdata } from '@/lib/api/clientApi';
 import Image from 'next/image';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function EditProfilePage() {
-    const [username, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const user = useAuthStore((state) => state.user);
+    const setUser = useAuthStore((state) => state.setUser);
     const router = useRouter();
+    
     const handleCancel = () => {
-        router.push('/profile')
-    }
-
-    const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUserName(event.target.value);
-    }
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        await getMeUpdata({username: username})
+        router.back();
     }
 
     useEffect(() =>{
         getMe()
-        .then((value) =>{
-            setUserEmail(value.email)
+        .then((user) =>{
+            setUsername(user.username ?? "")
         })
         
     }, [])
+
+    const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(event.target.value);
+    }
+
+    const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const updatedUser = await getMeUpdata({ username });
+        setUser(updatedUser);
+        router.push("/profile");
+    };
 
     return (
         <>
@@ -44,7 +49,7 @@ export default function EditProfilePage() {
                         priority
                     />
 
-                    <form className={css.profileInfo}>
+                    <form onSubmit={handleSaveUser} className={css.profileInfo}>
                         <div className={css.usernameWrapper}>
                             <label htmlFor="username">Username:</label>
                             <input value={username} onChange={handleChangeName} id="username"
@@ -53,10 +58,10 @@ export default function EditProfilePage() {
                             />
                         </div>
 
-                        <p>Email: { userEmail}</p>
+                        <p>Email: { user?.email}</p>
 
                         <div className={css.actions}>
-                            <button onSubmit={()=>handleSubmit} type="submit" className={css.saveButton}>
+                            <button type="submit" className={css.saveButton}>
                                 Save
                             </button>
                             <button onClick={handleCancel} type="button" className={css.cancelButton}>

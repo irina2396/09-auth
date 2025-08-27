@@ -11,10 +11,10 @@ const Header = () => {
   </Link>
   <nav aria-label="Main Navigation">
     <ul className={css.navigation}>
-      <AuthNavigation/>
       <li>
         <TagsMenu/>
       </li>
+      <AuthNavigation/>
     </ul>
   </nav>
 </header >

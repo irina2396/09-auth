@@ -13,7 +13,10 @@ export default function SignUpPage() {
 
     const handleSubmit = async (formData: FormData) => {
         try {
-            const formValues = Object.fromEntries(formData) as RegisterRequest;
+            const formValues: RegisterRequest = {
+                email: formData.get("email") as string,
+                password: formData.get("password") as string,
+            }
             const res = await register(formValues);
             if (res) {
                 setUser(res)
